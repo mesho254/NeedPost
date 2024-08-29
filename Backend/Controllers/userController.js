@@ -115,3 +115,27 @@ exports.resetPassword = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
+
+ exports.getAllUsers = async (req, res) => {
+    try {
+      const users = await User.find({}, 'username email'); 
+      res.json(users);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  };
+
+exports.getUserById = async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id)
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  };

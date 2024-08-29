@@ -103,7 +103,7 @@ const PostList = () => {
       key: 'actions',
       render: (text, record) => (
         <Space size="middle">
-          {user && user.user.id === record.user._id && (
+          {user.user && user.user.id === record.user._id && (
             <>
               <Button icon={<EditOutlined />} onClick={() => handleEdit(record)}>Edit</Button>
               <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record._id)} danger>Delete</Button>
@@ -144,7 +144,7 @@ const PostList = () => {
             <Col xs={24} sm={12} md={8} lg={8} key={post._id}>
               <Card
                 hoverable
-                cover={post.avatar && <img alt="avatar" src={post.avatar} style={{  width: '100%', height: '250px', objectFit: 'cover' }} />}
+                cover={<img alt="avatar" src={post.avatar} style={{  width: '100%', height: '250px', objectFit: 'contain' }} />}
                 actions={
                   user && user.user.id === post.user._id? [
                     <EditOutlined onClick={() => handleEdit(post)} />,
@@ -152,6 +152,7 @@ const PostList = () => {
                     <MessageOutlined onClick={() => handleMessage(post._id)} />,
                   ] : [<MessageOutlined onClick={() => handleMessage(post._id)} />]
                 }
+                style={{ borderRadius: '20px', overflow: 'hidden', position: 'relative',  maxWidth: "400px" }}
               >
                 <Card.Meta
                   title={post.item}

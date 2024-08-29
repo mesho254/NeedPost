@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, forgotPassword, resetPassword } = require('../Controllers/userController');
+const { registerUser, loginUser, forgotPassword, resetPassword, getAllUsers, getUserById } = require('../Controllers/userController');
 
 const router = express.Router();
 
@@ -168,5 +168,9 @@ router.post('/forgotPassword', forgotPassword);
  *         description: Invalid or expired token
  */
 router.post('/resetPassword/:resetToken', resetPassword);
+
+router.get('/allUsers', getAllUsers)
+
+router.get('/profile', getUserById)
 
 module.exports = router;

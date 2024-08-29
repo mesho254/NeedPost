@@ -1,35 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd';
 import { getMessagesByPostId } from '../services/api';
-import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000'); // Adjust URL as needed
-
-const MessageList = ({ postId }) => {
+const MessageList = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const response = await getMessagesByPostId(postId);
+      const response = await getMessagesByPostId();
       setMessages(response.data.messages);
     };
 
     fetchMessages();
-
-    // Join the room corresponding to the postId
-    socket.emit('joinRoom', postId);
-
-    // Listen for new messages
-    socket.on('newMessage', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    // Clean up when component unmounts
-    return () => {
-      socket.emit('leaveRoom', postId);
-      socket.off('newMessage');
-    };
-  }, [postId]);
+  }, []);
 
   return (
     <List

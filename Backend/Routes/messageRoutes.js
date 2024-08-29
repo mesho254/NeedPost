@@ -1,6 +1,6 @@
 const express = require('express');
-const { sendMessage, getMessages, markMessagesAsRead, getUnreadMessageCount,getMessagesByPostId, updateMessage, deleteMessage } = require('../Controllers/messageController');
-
+const { createMessage, getMessages,getMessagesByPostId, updateMessage, deleteMessage } = require('../Controllers/messageController');
+const { protect } = require('../MiddleWares/authMiddlware');
 const router = express.Router();
 
 /**
@@ -148,11 +148,10 @@ const router = express.Router();
  */
 
 router.route('/')
-    .get(getMessages)
-    .post(sendMessage);
+    .get(getMessagesByPostId)
+    .post(protect, createMessage);
 
 router.route('/:postId')
-    .get(getMessagesByPostId)
     .put(updateMessage)
     .delete(deleteMessage);
 

@@ -24,7 +24,7 @@ export const deletePost = (id) => axiosInstance.delete(`/posts/${id}`);
 
 // Message API requests
 export const createMessage = (messageData) => axiosInstance.post(`/messages`, messageData );
-export const getMessagesByPostId = (postId) => axiosInstance.get(`/messages/${postId}`);
+export const getMessagesByPostId = () => axiosInstance.get(`/messages`);
 export const updateMessage = (postId, messageId, messageData) => axiosInstance.put(`/messages/${postId}/${messageId}`, messageData );
 export const deleteMessage = (postId, messageId) => axiosInstance.delete(`/messages/${postId}/${messageId}` );
 

@@ -16,6 +16,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sentMessages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message',
+  }],
+  receivedMessages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message',
+  }],
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 }, { timestamps: true });

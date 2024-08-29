@@ -3,12 +3,14 @@ import { Form, Input, Button, Upload, message } from 'antd';
 import { createPost, updatePost } from '../services/api';
 import useAuth from '../hooks/useAuth';
 import { UploadOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
-const PostForm = ({ onPostCreated, post = null, onCancel }) => {
+const PostForm = ({ post = null, onCancel }) => {
   const [form] = Form.useForm();
   const { user } = useAuth();
   const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (post) {
@@ -40,6 +42,7 @@ const PostForm = ({ onPostCreated, post = null, onCancel }) => {
             Authorization: `Bearer ${user.token}`
           }
         });
+        message.success('Post updated successfully');
       } else {
         await createPost(formData, {
           headers: {
@@ -47,14 +50,15 @@ const PostForm = ({ onPostCreated, post = null, onCancel }) => {
             Authorization: `Bearer ${user.token}`
           }
         });
+        message.success('Post created successfully');
       }
-      onPostCreated();
-      form.resetFields();
-      setFileList([]);
+      
+      setLoading(false);
+      navigate('/');  // Navigate to the home page
+      window.location.reload(); // Refresh the page
     } catch (error) {
       console.error('Failed to submit post:', error);
       message.error('Failed to submit post');
-    } finally {
       setLoading(false);
     }
   };
@@ -74,7 +78,7 @@ const PostForm = ({ onPostCreated, post = null, onCancel }) => {
         <Input type="number" />
       </Form.Item>
       <Form.Item label="Avatar (optional)">
-          <Upload
+        <Upload
           listType="picture"
           fileList={fileList}
           onChange={handleFileChange}

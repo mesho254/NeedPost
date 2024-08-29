@@ -95,6 +95,31 @@ const getPosts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Get posts with pagination (only posts created by the logged-in user)
+const getPostsById = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const userId = req.user._id; // Get the logged-in user's ID
+
+  try {
+      // Find posts created by the logged-in user
+      const posts = await Post.find({ user: userId })
+          .populate('user', 'username')  // Populate the user field with username
+          .skip((page - 1) * limit)
+          .limit(Number(limit));
+
+      const total = await Post.countDocuments({ user: userId }); // Count only the posts created by the logged-in user
+
+      res.status(200).json({
+          total,
+          page: Number(page),
+          totalPages: Math.ceil(total / limit),
+          posts,
+      });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
   
 
 // Update a post by ID (only by the post owner)
@@ -193,4 +218,4 @@ const deletePost = async (req, res) => {
 };
 
 
-module.exports = { createPost, getPosts, updatePost ,deletePost, upload}
+module.exports = { createPost, getPosts, updatePost ,deletePost, getPostsById, upload}

@@ -12,6 +12,8 @@ const Login = lazy(() => import('./components/Auth/Login'));
 const Register = lazy(() => import('./components/Auth/Register'));
 const ForgotPassword = lazy(() => import('./components/Auth/ForgotPassword'));
 const ResetPassword = lazy(() => import('./components/Auth/ResetPassword'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Message = lazy(() => import('./components/Message'));
 const ErrorBoundary = lazy(() => import('./utils/ErrorBoundary'));
 
 function App() {
@@ -39,8 +41,10 @@ function App() {
               <Route path='/' element={<HomePage />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
+              <Route path='/profile' element={<Profile />} />
               <Route path="/forgotPassword" element={<ForgotPassword />} />
               <Route path="/password-reset/:id/:token" element={<ResetPassword />} />
+              <Route path='/messages' element={<Message />} />
               <Route path='*' element={<ErrorBoundary />} />
             </Routes>
           </Suspense>

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Result, Button } from "antd";
-import Navbar from "../components/Navbar";
 
 const PageNotFound = () => {
   const navigate = useNavigate();
@@ -10,7 +9,6 @@ const PageNotFound = () => {
   };
   return (
     <>
-    <Navbar/>
     <div id='content' style={{marginTop:"150px", marginBottom:"100px"}}>
         <Result
           status='404'
