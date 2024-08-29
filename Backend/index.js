@@ -9,35 +9,12 @@ const swaggerUi = require('swagger-ui-express');
 const postRoutes = require('./Routes/postRoutes');
 const messageRoutes = require('./Routes/messageRoutes');
 const userRoutes = require('./Routes/userRoutes');
-const http = require('http');
 
 
 const app = express();
-const server = http.createServer(app);
 dotenv.config();
-const io = require("socket.io")(server, {
-  cors: {
-    origin:"http://localhost:3000",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  }
-});
 
 
-// Socket.IO connection handling
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  // Join a room based on user ID
-  socket.on('join', (_id) => {
-    socket.join(_id.toString());
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -45,8 +22,6 @@ mongoose.connect(process.env.MONGO_URI, {
 })
   .then(() => {
     console.log('MongoDB connected');
-    // Attach io instance to app for use in routes
-    app.io = io;
   })
   .catch(err => console.error(err));
 
@@ -98,21 +73,9 @@ app.use('/api/auth', userRoutes);
 // Define a simple route for testing
 app.get('/', (req, res) => res.send('API Running'));
 
-// io.on('connection', (socket) => {
-//   console.log('New client connected');
-  
-//   socket.on('sendMessage', (message) => {
-//     io.emit('receiveMessage', message);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('Client disconnected');
-//   });
-// });
-
 const PORT = process.env.PORT || 5001;
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`View documentation at http://localhost:${PORT}/api-docs`);
   })
