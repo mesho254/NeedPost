@@ -6,6 +6,7 @@ import useAuth from '../hooks/useAuth';
 import PostForm from './PostForm';
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -18,7 +19,8 @@ const PostList = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isMessageModalVisible, setIsMessageModalVisible] = useState(false); // Added for message modal
+  const [isMessageModalVisible, setIsMessageModalVisible] = useState(false); 
+  const navigate = useNavigate()
 
   const { user } = useAuth();
 
@@ -52,8 +54,12 @@ const PostList = () => {
   };
 
   const handleMessage = (postId) => {
-    setSelectedPostId(postId);
-    setIsMessageModalVisible(true);
+    if (!user || !user.user) {
+      navigate('/login');
+    } else {
+      setSelectedPostId(postId);
+      setIsMessageModalVisible(true);
+    }
   };
 
   const handleMessageSent = () => {
@@ -132,9 +138,13 @@ const PostList = () => {
             <Option value="card"><AppstoreOutlined /> Card View</Option>
             <Option value="table"><TableOutlined /> Table View</Option>
           </Select>
+          {user.user ? (
           <Button type="primary" icon={<PlusOutlined />} onClick={handleCreatePost}>
             Add New Post
           </Button>
+        ):(
+          <div></div>
+        )}
         </div>
       </div>
 
