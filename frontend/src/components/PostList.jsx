@@ -138,7 +138,7 @@ const PostList = () => {
             <Option value="card"><AppstoreOutlined /> Card View</Option>
             <Option value="table"><TableOutlined /> Table View</Option>
           </Select>
-          {user.user ? (
+          {user ? (
           <Button type="primary" icon={<PlusOutlined />} onClick={handleCreatePost}>
             Add New Post
           </Button>
